@@ -16,106 +16,137 @@ using std::string;
 using std::vector;
 using std::time;
 
-//returns a reference to a string
-string& refToElement(vector<string>& inventory, int i);
-
 void badSwap(int x, int y);
-void goodSwap(int& x, int& y);
+void goodSwap(int* const pX, int* const pY);
 
-//parameter vec is a constant reference to a vector of strings
-void display(const vector<string>& inventory);
+string* ptrToElement(vector<string>* const pVec, int i);
 
-/**引用*/
+void increase(int* const array, int NUM_ELEMENTS);
+void display(const int*  const array, const int NUM_ELEMENTS);
+
+/**指针*/
 int _tmain(int argc, _TCHAR* argv[]){
-	//使用引用
-	int myScore = 1000;
-	int& mikesScore = myScore;  // create a reference
+	//指针基础
+	int* pAPinter;
+	int* pScore = 0;
+	int score = 1000;
+	pScore = &score;
+	cout << "Assigning &score to pScore\n";
+	cout << "&score is:" << &score << "\n";
+	cout << "pScore is:" << pScore << "\n";
+	cout << "score is:" << score << "\n";
+	cout << "*pScore is:" << *pScore << "\n\n";
 
-	cout << "myScore is: " << myScore << "\n";
-	cout << "mikesScore is: " << mikesScore << "\n\n";
+	cout << "Adding 500 to score\n";
+	score += 500;
+	cout << "score is:" << score << "\n";
+	cout << "*pScore is:" << *pScore << "\n\n";
 
-	cout << "Adding 500 to myScore\n";
-	myScore += 500;
-	cout << "myScore is: " << myScore << "\n";
-	cout << "mikesScore is: " << mikesScore << "\n\n";
+	cout << "Adding 500 to *pScore\n";
+	*pScore += 500;
+	cout << "score is:" << score << "\n";
+	cout << "*pScore is:" << *pScore << "\n\n";
 
-	cout << "Adding 500 to mikesScore\n";
-	mikesScore += 500;
-	cout << "myScore is: " << myScore << "\n";
-	cout << "mikesScore is: " << mikesScore << "\n\n";
+	cout << "Assigning &newScore to pScore\n";
+	int newScore = 5000;
+	pScore = &newScore;
+	cout << "&newScore is:" << &newScore << "\n";
+	cout << "pScore is:" << pScore << "\n";
+	cout << "newScore is:" << newScore << "\n";
+	cout << "*pScore is:" << *pScore << "\n\n";
 
-	//返回引用
+	cout << "Assigning &str to pStr\n";
+	string str = "score";
+	string* pStr = &str;
+	cout << "str is:" << str << "\n";
+	cout << "*pStr is:" << *pStr << "\n";
+	cout << "(*pStr).size() is:" << (*pStr).size() << "\n";
+	cout << "pStr->size() is:" << pStr->size() << "\n";
+	//传递指针
+	int myScore = 150;
+	int yourScore = 1000;
+	cout << "\n\nOriginal values\n";
+	cout << "myScore:" << myScore << "\n";
+	cout << "yourScore:" << yourScore << "\n\n";
+
+	cout << "Calling badSwap()\n";
+	badSwap(myScore,yourScore);
+	cout << "myScore:" << myScore << "\n";
+	cout << "yourScore:" << yourScore << "\n\n";
+
+	cout << "Calling goodSwap()\n";
+	goodSwap(&myScore, &yourScore);
+	cout << "myScore:" << myScore << "\n";
+	cout << "yourScore:" << yourScore << "\n\n";
+	//返回指针
 	vector<string> inventory;
 	inventory.push_back("sword");
 	inventory.push_back("armor");
 	inventory.push_back("shield");
 
-	//displays string that the returned reference refers to 
-	cout << "Sending the returned reference to cout:\n";
-	cout << refToElement(inventory, 0) << "\n\n";
+	//displays string object that the returned pointer points to
+	cout << "Sending the object pointed to by returned pointer to cout:\n";
+	cout << *(ptrToElement(&inventory, 0)) << "\n\n";
 
-	//assigns one reference to another -- inexpensive assignment 
-	cout << "Assigning the returned reference to another reference.\n";
-	string& rStr = refToElement(inventory, 1);
-	cout << "Sending the new reference to cout:\n";
-	cout << rStr << "\n\n";
+	//assigns one pointer to another -- inexpensive assignment
+	cout << "Assigning the returned pointer to another pointer.\n";
+	string* pStr0 = ptrToElement(&inventory,1);
+	cout << "Sending the object pointed to by new pointer to cout:\n";
+	cout << *pStr0 << "\n\n";
 
 	//copies a string object -- expensive assignment
-	cout << "Assigning the returned reference to a string object.\n";
-	string str = refToElement(inventory, 2);
+	cout << "Assigning object pointed to by pointer to a string object.\n";
+	string str0 = *(ptrToElement(&inventory, 2));
 	cout << "Sending the new string object to cout:\n";
-	cout << str << "\n\n";
+	cout << str0 << "\n\n";
 
-	//altering the string object through a returned reference
-	cout << "Altering an object through a returned reference.\n";
-	rStr = "Healing Potion";
-	cout << "Sending the altered object to cout:\n";
+	//altering the string object through a returned pointer
+	cout << "Altering an object through a returned pointer.\n";
+	*pStr0 = "Healing Potion";
 	cout << inventory[1] << endl;
 
-	//通过传递引用改变实参
-	int yourScore = 1000;
-	cout << "Original values\n";
-	cout << "myScore: " << myScore << "\n";
-	cout << "yourScore: " << yourScore << "\n\n";
+	//指针与数组的关系
+	cout << "Creating an array of high scores.\n\n";
+	const int NUM_SCORES = 3;
+	int highScores[NUM_SCORES] = { 5000, 3500, 2700 };
+	cout << "Displaying scores using array name as a constant pointer.\n";
+	cout << *highScores << endl;
+	cout << *(highScores + 1) << endl;
+	cout << *(highScores + 2) << "\n\n";
+	cout << "Increasing scores by passing array as a constant pointer.\n\n";
+	increase(highScores,NUM_SCORES);
 
-	cout << "Calling badSwap()\n";
-	badSwap(myScore, yourScore);
-	cout << "myScore: " << myScore << "\n";
-	cout << "yourScore: " << yourScore << "\n\n";
-
-	cout << "Calling goodSwap()\n";
-	goodSwap(myScore, yourScore);
-	cout << "myScore: " << myScore << "\n";
-	cout << "yourScore: " << yourScore << "\n";
-	//传递引用以提高效率
-	display(inventory);
+	cout << "Displaying scores by passing array as a constant pointer to a constant.\n";
+	display(highScores,NUM_SCORES);
 
 	//system("pause");
 	return EXIT_SUCCESS;
 }
 
-//returns a reference to a string
-string& refToElement(vector<string>& vec, int i){
-	return vec[i];
-}
-
-void badSwap(int x, int y){
+void badSwap(int x,int y){
 	int temp = x;
 	x = y;
 	y = temp;
 }
 
-void goodSwap(int& x, int& y){
-	int temp = x;
-	x = y;
-	y = temp;
+void goodSwap(int* pX,int* pY){
+	int temp = *pX;
+	*pX = *pY;
+	*pY = temp;
 }
 
-//parameter vec is a constant reference to a vector of strings
-void display(const vector<string>& vec){
-	cout << "Your items:\n";
-	for (vector<string>::const_iterator iter = vec.begin();
-		iter != vec.end(); ++iter)	{
-		cout << *iter << endl;
+string* ptrToElement(vector<string>* const pVec,int i){
+	return &((*pVec)[i]);
+}
+
+void increase(int* const array,int NUM_ELEMENTS){
+	for (int i = 0; i < NUM_ELEMENTS; i++)	{
+		array[i] += 500;
+	}
+}
+
+void display(const int*  const array, const int NUM_ELEMENTS){
+	for (int i = 0; i < NUM_ELEMENTS; i++)	{
+		cout << array[i] << endl;
 	}
 }
