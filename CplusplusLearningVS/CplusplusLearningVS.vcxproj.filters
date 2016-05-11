@@ -29,7 +29,7 @@
     <ClCompile Include="stdafx.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="CplusplusLearningVS.cpp">
+    <ClCompile Include="PointerTest.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
