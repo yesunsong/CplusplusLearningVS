@@ -16,7 +16,6 @@ using std::string;
 using std::vector;
 using std::time;
 
-
 /**Ö¸Õë*/
 int _tmain(int argc, _TCHAR* argv[]){
 	//Ö¸Õë»ù´¡
@@ -64,3 +63,4 @@ int _tmain(int argc, _TCHAR* argv[]){
 	//system("pause");
 	return EXIT_SUCCESS;
 }
+

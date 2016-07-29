@@ -31,6 +31,7 @@ int _tmain(int argc, _TCHAR* argv[]){
 	string bodyPart = askText("Please enter a body part:");
 	string verb = askText("Please enter a verb:");
 	tellsStory(name,noun,number,bodyPart,verb);
+	int a=((1+20)+3);
 	//system("pause");
 	return EXIT_SUCCESS;
 }
